@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+class Pokemon {
+public:
+    string name;
+    int health;
+    int attackPower;
+
+    Pokemon(string n, int h, int ap) : name(n), health(h), attackPower(ap) {}
+
+    void attack(Pokemon &enemy) {
+        int damage = rand() % attackPower + 1;
+        enemy.health -= damage;
+        cout << name << " attacks " << enemy.name << " for " << damage << " damage!" << endl;
+    }
+
+    bool isAlive() const {
+        return health > 0;
+    }
+};
+
+int main() {
+    srand(static_cast<unsigned>(time(0))); // Seed for random number generation
+
+    Pokemon pikachu("Pikachu", 100, 20);
+    Pokemon charmander("Charmander", 90, 18);
+
+    while (pikachu.isAlive() && charmander.isAlive()) {
+        // Pikachu attacks Charmander
+        pikachu.attack(charmander);
+        
+        // Check if Charmander fainted
+        if (!charmander.isAlive()) {
+            cout << charmander.name << " fainted! " << pikachu.name << " wins!" << endl;
+            break;
+        }
+
+        // Charmander attacks Pikachu
+        charmander.attack(pikachu);
+        
+        // Check if Pikachu fainted
+        if (!pikachu.isAlive()) {
+            cout << pikachu.name << " fainted! " << charmander.name << " wins!" << endl;
+            break;
+        }
+
+        cout << "---------------------" << endl;
+    }
+
+    return 0;
+}
